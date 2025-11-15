@@ -1,0 +1,416 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Confirmação de Presentes — Casamento</title>
+
+  <!-- Bootstrap 5 (CDN) -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-..." crossorigin="anonymous">
+  <!-- SweetAlert2 (CDN) -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <!-- Axios (CDN) -->
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <!-- Feather icons (CDN) -->
+  <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+  <!-- Inputmask (CDN) for telefone -->
+  <script src="https://cdn.jsdelivr.net/npm/inputmask@5/dist/inputmask.min.js"></script>
+
+  <style>
+    :root{
+      --accent-1: #b91c1c; /* vermelho */
+      --accent-2: #f59e0b; /* amarelo */
+      --bg: #fff;
+    }
+    body{background: linear-gradient(180deg,#fff 0%, #fff8ef 100%); color:#222}
+    .hero{background:linear-gradient(90deg,var(--accent-1),var(--accent-2)); color:white}
+    .card-presente{border-radius:1rem; box-shadow:0 6px 18px rgba(0,0,0,0.08)}
+    .foto-presente{height:160px; object-fit:cover; border-top-left-radius:1rem; border-top-right-radius:1rem}
+    .disabled-overlay{position:absolute; inset:0; background:rgba(255,255,255,0.6); display:flex; align-items:center; justify-content:center; font-weight:700; color:#b91c1c; border-radius:1rem}
+    .small-muted{font-size:0.9rem; color:#666}
+    footer{margin-top:48px}
+
+    /* Responsividade: grid */
+    .grid-presente{display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:18px}
+  </style>
+</head>
+<body>
+
+  <header class="hero py-4">
+    <div class="container d-flex align-items-center justify-content-between">
+      <div>
+        <h1 class="h3 mb-0">Confirme seu presente — <small>Bruna & João</small></h1>
+        <div class="small">Escolha com carinho. Evite duplicidade — tudo em tempo real.</div>
+      </div>
+      <div>
+        <button id="btnConsultar" class="btn btn-light btn-sm me-2">Consultar minhas escolhas</button>
+        <button id="btnRefresh" class="btn btn-outline-light btn-sm">Atualizar</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container my-4">
+
+    <section class="mb-3">
+      <div class="d-flex align-items-center justify-content-between">
+        <h2 class="h5">Catálogo de Presentes</h2>
+        <div class="small-muted">Toque em um presente para ver detalhes e confirmar.</div>
+      </div>
+    </section>
+
+    <section id="catalogo" class="grid-presente" aria-live="polite">
+      <!-- cards gerados pela JS -->
+    </section>
+
+<section id="minhasEscolhas" class="mt-5" style="display:none">
+  <h2 class="h5 mb-3">Minhas escolhas</h2>
+  <div id="listaEscolhas" class="grid-presente"></div>
+</section>
+
+    <hr class="my-4">
+
+    <section class="row">
+      <div class="col-md-6">
+        <h3 class="h6">Confirmar por telefone</h3>
+        <form id="formConsulta" class="row g-2">
+          <div class="col-8">
+            <input id="telefoneConsulta" class="form-control" placeholder="(DDD) 9xxxx-xxxx" />
+          </div>
+          <div class="col-4">
+            <button class="btn btn-primary w-100" type="submit">Consultar</button>
+          </div>
+        </form>
+      </div>
+      <div class="col-md-6 text-md-end align-self-center small-muted">
+        <div>Problemas com CORS? Veja nota técnica ao final da página.</div>
+      </div>
+    </section>
+
+    <footer class="text-center mt-5 small-muted">
+      <div>Feito com ❤️ — substitua textos, nomes e API_URL conforme necessário.</div>
+      <div class="mt-2">Versão: 1.0 • CDN: Bootstrap, Axios, SweetAlert2, Feather, Inputmask</div>
+    </footer>
+
+  </main>
+
+  <!-- Modal template (Bootstrap 5) -->
+  <div class="modal fade" id="modalDetalhe" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header" style="background:var(--accent-1); color:white">
+          <h5 class="modal-title">Detalhe do Presente</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <img id="mdFoto" src="" alt="foto" class="img-fluid mb-3 rounded">
+          <h5 id="mdNome"></h5>
+          <p id="mdLink"></p>
+
+          <hr>
+
+          <div class="mb-2">
+            <label class="form-label">Seu nome</label>
+            <input id="mdConvidado" class="form-control" placeholder="Seu nome completo">
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Telefone</label>
+            <input id="mdTelefone" class="form-control" placeholder="(DDD) 9xxxx-xxxx">
+          </div>
+
+          <div class="d-flex gap-2">
+            <button id="btnConfirmarPresente" class="btn" style="background:var(--accent-2); color:#111">Confirmar presente</button>
+            <button id="btnCancelarPresente" class="btn btn-outline-danger ms-auto">Cancelar escolha</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap JS (CDN) -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-..." crossorigin="anonymous"></script>
+
+  <script>
+const API_URL = "https://script.google.com/macros/s/AKfycbyb3c2xbNpAjKs1Pf8QxNA9vFQjDH8nJ17752pbB8F5D-y_JSHYnLNyug5Flhlg2ggwVQ/exec";
+
+let presentesCache = [];
+const modal = new bootstrap.Modal(document.getElementById("modalDetalhe"));
+let presenteSelecionado = null;
+
+Inputmask({ mask: "(99) 99999-9999" }).mask(document.getElementById("telefoneConsulta"));
+
+document.addEventListener("DOMContentLoaded", () => {
+  carregarCatalogo();
+  feather.replace();
+});
+
+document.getElementById("btnRefresh").addEventListener("click", carregarCatalogo);
+document.getElementById("btnConsultar").addEventListener("click", () => {
+  document.getElementById("telefoneConsulta").focus();
+});
+
+document.getElementById("formConsulta").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const t = document.getElementById("telefoneConsulta").value.replace(/\D/g, "");
+  if (!t) return Swal.fire("Informe o telefone");
+  await consultarPorTelefone(t);
+});
+
+/* ============================
+    GET PRESENTES (JSON)
+============================ */
+async function carregarCatalogo() {
+  showLoading("Carregando catálogo...");
+
+  try {
+    const resp = await fetch(`${API_URL}?action=getPresentes`, {
+      method: "GET"
+    });
+
+    const dados = JSON.parse(await resp.text()); // 👈 Ajuste: Apps Script entrega como texto
+    presentesCache = dados;
+
+    renderCatalogo(presentesCache);
+    closeLoading();
+
+  } catch (err) {
+    closeLoading();
+    Swal.fire("Erro", "Não foi possível carregar o catálogo.", "error");
+  }
+}
+
+function renderCatalogo(list) {
+  const container = document.getElementById("catalogo");
+  container.innerHTML = "";
+
+  if (!list.length) {
+    container.innerHTML = `<div class="p-4 text-center small-muted">Nenhum presente disponível no momento.</div>`;
+    return;
+  }
+
+  list.forEach((p, idx) => {
+    const card = document.createElement("div");
+    card.className = "card-presente position-relative card";
+    card.style.padding = "0";
+
+    card.innerHTML = `
+      <img src="${p.foto || "https://via.placeholder.com/400x240?text=Sem+Imagem"}" class="foto-presente w-100">
+      <div class="p-3">
+        <h5>${escapeHtml(p.nome)}</h5>
+        <div class="small-muted">Link: <a href="${escapeAttr(p.link)}" target="_blank">ver</a></div>
+        <div class="mt-3 d-flex">
+          <button class="btn btn-sm btn-outline-primary me-2 btn-open" data-idx="${idx}">Ver detalhes</button>
+          <button class="btn btn-sm btn-success ms-auto btn-choose" data-idx="${idx}">Reservar</button>
+        </div>
+      </div>
+    `;
+
+    container.appendChild(card);
+  });
+
+  document.querySelectorAll(".btn-open").forEach((b) => b.addEventListener("click", abrirDetalhe));
+  document.querySelectorAll(".btn-choose").forEach((b) => b.addEventListener("click", abrirDetalhe));
+}
+
+function abrirDetalhe(e) {
+  const idx = e.currentTarget.dataset.idx;
+  presenteSelecionado = presentesCache[idx];
+
+  document.getElementById("mdFoto").src = presenteSelecionado.foto || "";
+  document.getElementById("mdNome").innerText = presenteSelecionado.nome;
+  document.getElementById("mdLink").innerHTML = `<a href="${escapeAttr(presenteSelecionado.link)}" target="_blank">Abrir link</a>`;
+
+  document.getElementById("mdConvidado").value = "";
+  document.getElementById("mdTelefone").value = "";
+
+  Inputmask({ mask: "(99) 99999-9999" }).mask(document.getElementById("mdTelefone"));
+
+  modal.show();
+}
+
+/* ============================
+    CONFIRMAR PRESENTE (POST)
+============================ */
+document.getElementById("btnConfirmarPresente").addEventListener("click", async () => {
+  const nome = document.getElementById("mdConvidado").value.trim();
+  const telefone = document.getElementById("mdTelefone").value.replace(/\D/g, "");
+
+  if (!nome || !telefone) return Swal.fire("Preencha nome e telefone");
+
+  try {
+    showLoading("Confirmando...");
+
+    const resp = await fetch(`${API_URL}?action=registrarEscolha`, {
+      method: "POST",
+      body: JSON.stringify({
+        nomePresente: presenteSelecionado.nome,
+        convidado: nome,
+        telefone: telefone
+      })
+    });
+
+    const dados = JSON.parse(await resp.text());
+    closeLoading();
+
+    Swal.fire("OK", dados?.mensagem || "Confirmado!", "success");
+    modal.hide();
+    carregarCatalogo();
+
+  } catch (err) {
+    closeLoading();
+    Swal.fire("Erro", "Não foi possível confirmar.", "error");
+  }
+});
+
+/* ============================
+    CANCELAR PRESENTE (POST)
+============================ */
+document.getElementById("btnCancelarPresente").addEventListener("click", async () => {
+  const telefone = document.getElementById("mdTelefone").value.replace(/\D/g, "");
+  if (!telefone) return Swal.fire("Informe o telefone");
+
+  const ask = await Swal.fire({ title: "Deseja cancelar?", showCancelButton: true });
+  if (!ask.isConfirmed) return;
+
+  try {
+    showLoading("Cancelando...");
+
+    const resp = await fetch(`${API_URL}?action=cancelarEscolha`, {
+      method: "POST",
+      body: JSON.stringify({
+        nomePresente: presenteSelecionado.nome,
+        telefone
+      })
+    });
+
+    const dados = JSON.parse(await resp.text());
+    closeLoading();
+
+    Swal.fire("OK", dados?.mensagem || "Cancelado", "success");
+    modal.hide();
+    carregarCatalogo();
+
+  } catch (err) {
+    closeLoading();
+    Swal.fire("Erro ao cancelar.", "", "error");
+  }
+});
+
+/* ============================
+  CONSULTAR POR TELEFONE (GET)
+============================ */
+async function consultarPorTelefone(telefone) {
+  showLoading("Consultando...");
+
+  try {
+    const resp = await fetch(`${API_URL}?action=getEscolhasPorTelefone&telefone=${telefone}`);
+    const dados = JSON.parse(await resp.text());
+    closeLoading();
+
+    const box = document.getElementById("minhasEscolhas");
+    const lista = document.getElementById("listaEscolhas");
+
+    if (!dados.length) {
+      box.style.display = "none";
+      return Swal.fire("Nenhuma escolha encontrada.");
+    }
+
+    // Exibir box
+    box.style.display = "block";
+    lista.innerHTML = "";
+
+    dados.forEach((item) => {
+      const card = document.createElement("div");
+      card.className = "card-presente card position-relative";
+      card.style.padding = "0";
+
+      card.innerHTML = `
+        <img src="${item.foto || 'https://via.placeholder.com/400x240?text=Sem+Imagem'}"
+             class="foto-presente w-100">
+
+        <div class="p-3">
+          <h5>${escapeHtml(item.nomePresente)}</h5>
+
+          <div class="small-muted">
+            Link:
+            <a href="${escapeAttr(item.link)}" target="_blank">ver</a>
+          </div>
+
+          <button class="btn btn-sm btn-danger mt-3 btn-cancelar"
+                  data-nome="${escapeAttr(item.nomePresente)}"
+                  data-telefone="${escapeAttr(telefone)}">
+            Cancelar escolha
+          </button>
+        </div>
+      `;
+
+      lista.appendChild(card);
+    });
+
+    // Eventos dos botões de cancelar
+    document.querySelectorAll(".btn-cancelar").forEach((btn) => {
+      btn.addEventListener("click", async () => {
+        const nomePresente = btn.dataset.nome;
+        const tel = btn.dataset.telefone;
+
+        const ask = await Swal.fire({
+          title: "Deseja cancelar este presente?",
+          showCancelButton: true
+        });
+
+        if (!ask.isConfirmed) return;
+
+        try {
+          showLoading("Cancelando...");
+          const resp = await fetch(`${API_URL}?action=cancelarEscolha`, {
+            method: "POST",
+            body: JSON.stringify({
+              nomePresente: nomePresente,
+              telefone: tel
+            })
+          });
+
+          const dados = JSON.parse(await resp.text());
+          closeLoading();
+
+          Swal.fire("OK", dados?.mensagem || "Cancelado", "success");
+          carregarCatalogo();
+          consultarPorTelefone(tel); // Recarregar lista
+
+        } catch (err) {
+          closeLoading();
+          Swal.fire("Erro ao cancelar.", "", "error");
+        }
+      });
+    });
+
+  } catch (err) {
+    closeLoading();
+    Swal.fire("Erro ao consultar.");
+  }
+}
+
+
+/* ============================
+      Helpers
+============================ */
+function showLoading(text = "Carregando...") {
+  Swal.fire({ title: text, allowOutsideClick: false, didOpen: () => Swal.showLoading() });
+}
+
+function closeLoading() {
+  Swal.close();
+}
+
+function escapeHtml(s) {
+  return s?.replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+}
+
+function escapeAttr(s) {
+  return s?.replace(/"/g, "&quot;");
+}
+</script>
+
+
+
+</body>
+</html>
