@@ -17,21 +17,235 @@
   <script src="https://cdn.jsdelivr.net/npm/inputmask@5/dist/inputmask.min.js"></script>
 
   <style>
-    :root{
-      --accent-1: #b91c1c; /* vermelho */
-      --accent-2: #f59e0b; /* amarelo */
-      --bg: #fff;
-    }
-    body{background: linear-gradient(180deg,#fff 0%, #fff8ef 100%); color:#222}
-    .hero{background:linear-gradient(90deg,var(--accent-1),var(--accent-2)); color:white}
-    .card-presente{border-radius:1rem; box-shadow:0 6px 18px rgba(0,0,0,0.08)}
-    .foto-presente{height:160px; object-fit:cover; border-top-left-radius:1rem; border-top-right-radius:1rem}
-    .disabled-overlay{position:absolute; inset:0; background:rgba(255,255,255,0.6); display:flex; align-items:center; justify-content:center; font-weight:700; color:#b91c1c; border-radius:1rem}
-    .small-muted{font-size:0.9rem; color:#666}
-    footer{margin-top:48px}
+    /* ======================================================
+   🎩 TEMA LUXO – PRETO | CINZA | BRANCO
+   Estilo premium para site de casamento
+====================================================== */
 
-    /* Responsividade: grid */
-    .grid-presente{display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:18px}
+:root {
+  --black: #000;
+  --dark: #111;
+  --gray-1: #1a11;
+  --gray-2: #2a2a2a;
+  --gray-3: #ccc;
+  --gray-4: #eee;
+  --white: #fff;
+
+  --border-soft: rgba(255,255,255,0.08);
+  --shadow-soft: 0 8px 28px rgba(0,0,0,0.35);
+  --shadow-soft-light: 0 6px 20px rgba(0,0,0,0.18);
+
+  --radius: 1rem;
+
+  --font-title: "Playfair Display", serif;
+  --font-text: "Helvetica Neue", Arial, sans-serif;
+}
+
+/* BACKGROUND GERAL */
+body {
+  background: radial-gradient(circle at top, #1a1a1a, #000);
+  color: var(--white);
+  font-family: var(--font-text);
+  margin: 0;
+}
+
+/* HEADER */
+.hero {
+  background: linear-gradient(135deg, #000, #1a1a1a);
+  padding: 30px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  box-shadow: 0 5px 25px rgba(0,0,0,0.4);
+}
+
+.hero h1 {
+  font-family: var(--font-title);
+  font-size: 1.8rem;
+  letter-spacing: 0.5px;
+}
+
+.hero small {
+  font-weight: 300;
+  opacity: .85;
+}
+
+.hero button {
+  border-radius: 8px !important;
+}
+
+/* TITULOS */
+h2, h3, h5 {
+  font-family: var(--font-title);
+}
+
+.small-muted {
+  font-size: .9rem;
+  color: #bdbdbd !important;
+}
+
+/* GRID PRESENTES */
+.grid-presente {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 22px;
+}
+
+/* CARD DE PRESENTE */
+.card-presente {
+  background: var(--white);
+  color: var(--dark);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-soft-light);
+  border: none;
+  overflow: hidden;
+  transition: .3s ease;
+}
+
+.card-presente:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 35px rgba(0,0,0,0.28);
+}
+
+.foto-presente {
+  height: 200px;
+  width: 100%;
+  object-fit: cover;
+}
+
+/* BOTÃO RESERVAR */
+.card-presente .btn-success {
+  background: var(--black) !important;
+  border: none;
+  letter-spacing: .5px;
+  padding: 6px 12px;
+}
+
+.card-presente .btn-success:hover {
+  background: #333 !important;
+}
+
+/* INPUTS */
+input.form-control {
+  border-radius: 0.7rem;
+}
+
+/* BOTÕES GERAIS */
+.btn-primary {
+  background: var(--black) !important;
+  border: none !important;
+}
+
+.btn-primary:hover {
+  background: #333 !important;
+}
+
+.btn-outline-light:hover {
+  background: #fff !important;
+  color: #111 !important;
+}
+
+/* BOTÃO CANCELAR */
+.btn-danger {
+  background: #b70000 !important;
+  border: none !important;
+}
+
+.btn-danger:hover {
+  background: #8a0000 !important;
+}
+
+/* MODAL */
+.modal-content {
+  background: var(--white);
+  color: var(--dark);
+  border-radius: var(--radius);
+  border: none;
+  overflow: hidden;
+  box-shadow: var(--shadow-soft);
+}
+
+.modal-header {
+  background: var(--black);
+  color: var(--white);
+  border-bottom: none;
+}
+
+#btnConfirmarPresente {
+  background: var(--black) !important;
+  color: var(--white) !important;
+  border: none;
+  padding: 12px;
+  border-radius: .8rem;
+  font-size: 1rem;
+}
+
+#btnConfirmarPresente:hover {
+  background: #222 !important;
+}
+
+/* FOOTER */
+footer {
+  padding: 40px 0;
+  border-top: 1px solid rgba(255,255,255,0.05);
+  opacity: .75;
+  font-family: var(--font-text);
+}
+
+/* SUAVIZA LINKS */
+a {
+  color: #333;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+a:hover {
+  opacity: 0.7;
+}
+
+/* ===========================
+   SweetAlert2 – Tema Luxo
+=========================== */
+
+.swal2-popup {
+  background: #111 !important;
+  color: #fff !important;
+  border-radius: 1rem !important;
+  padding: 20px !important;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.6) !important;
+}
+
+.swal2-title {
+  font-family: "Playfair Display", serif !important;
+  color: #fff !important;
+  font-size: 1.6rem !important;
+}
+
+.swal2-html-container {
+  color: #ddd !important;
+  font-size: 1rem !important;
+}
+
+.swal2-confirm {
+  background: #000 !important;
+  border-radius: 0.7rem !important;
+  border: none !important;
+  padding: 10px 22px !important;
+}
+
+.swal2-confirm:hover {
+  background: #222 !important;
+}
+
+.swal2-cancel {
+  background: #333 !important;
+  color: #fff !important;
+  border-radius: 0.7rem !important;
+  border: none !important;
+}
+
+.swal2-cancel:hover {
+  background: #444 !important;
+}
+
   </style>
 </head>
 <body>
@@ -40,7 +254,7 @@
     <div class="container d-flex align-items-center justify-content-between">
       <div>
         <h1 class="h3 mb-0">Confirme seu presente — <small>EUZIMAR & DANIELA</small></h1>
-        <div class="small">Escolha com carinho. Evite duplicidade — tudo em tempo real.</div>
+        <div class="small">Escolha com carinho — tudo em tempo real.</div>
       </div>
       <div>
         <button id="btnConsultar" class="btn btn-light btn-sm me-2">Minhas Escolhas</button>
@@ -192,7 +406,7 @@ function renderCatalogo(list) {
       <img src="${p.foto || "https://via.placeholder.com/400x240?text=Sem+Imagem"}" class="foto-presente w-100">
       <div class="p-3">
         <h5>${escapeHtml(p.nome)}</h5>
-        <div class="small-muted">Link: <a href="${escapeAttr(p.link)}" target="_blank">ver</a></div>
+        <div class="small-muted"><a href="${escapeAttr(p.link)}" target="_blank">Clique: <b style="color:blue">Link da loja</b</a></div>
         <div class="mt-3 d-flex">
           <button class="btn btn-sm btn-success ms-auto btn-choose" data-idx="${idx}">Reservar</button>
         </div>
@@ -409,5 +623,3 @@ function escapeAttr(s) {
 
 </body>
 </html>
-
-
