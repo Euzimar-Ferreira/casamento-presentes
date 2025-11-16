@@ -85,7 +85,8 @@ h2, h3, h5 {
 /* GRID PRESENTES */
 .grid-presente {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  grid-template-columns: repeat(auto-fill, 250px);
+  justify-content: center; /* centraliza o grid */
   gap: 22px;
 }
 
@@ -246,6 +247,20 @@ a:hover {
   background: #444 !important;
 }
 
+.btn-ghost {
+  border: 2px solid var(--black);
+  background: transparent !important;
+  color: var(--black) !important;
+  border-radius: .8rem;
+  padding: 10px 22px;
+  transition: .25s ease;
+}
+
+.btn-ghost:hover {
+  background: rgba(0,0,0,0.07) !important;
+  color: var(--black) !important;
+}
+
   </style>
 </head>
 <body>
@@ -330,6 +345,7 @@ a:hover {
 
           <div class="d-flex gap-2">
             <button id="btnConfirmarPresente" class="btn" style="background:var(--accent-2); color:#111">Confirmar presente</button>
+		<button id="btnVoltarModal" class="btn btn-ghost">Voltar</button>
           </div>
         </div>
       </div>
@@ -363,6 +379,10 @@ document.getElementById("formConsulta").addEventListener("submit", async (e) => 
   const t = document.getElementById("telefoneConsulta").value.replace(/\D/g, "");
   if (!t) return Swal.fire("Informe o telefone");
   await consultarPorTelefone(t);
+});
+
+document.getElementById("btnVoltarModal").addEventListener("click", () => {
+  modal.hide();
 });
 
 /* ============================
@@ -399,7 +419,7 @@ function renderCatalogo(list) {
 
   list.forEach((p, idx) => {
     const card = document.createElement("div");
-    card.className = "card-presente position-relative card";
+    card.className = "card-presente position-relative card ";
     card.style.padding = "0";
 
     card.innerHTML = `
@@ -426,7 +446,7 @@ function abrirDetalhe(e) {
 
   document.getElementById("mdFoto").src = presenteSelecionado.foto || "";
   document.getElementById("mdNome").innerText = presenteSelecionado.nome;
-  document.getElementById("mdLink").innerHTML = `<a href="${escapeAttr(presenteSelecionado.link)}" target="_blank">Abrir link</a>`;
+  document.getElementById("mdLink").innerHTML = `<a href="${escapeAttr(presenteSelecionado.link)}" target="_blank">Clique: <b style="color:blue">Link da loja</b></a>`;
 
   document.getElementById("mdConvidado").value = "";
   document.getElementById("mdTelefone").value = "";
@@ -541,7 +561,7 @@ async function consultarPorTelefone(telefone) {
 
           <div class="small-muted">
             Link:
-            <a href="${escapeAttr(item.link)}" target="_blank">ver</a>
+            <a href="${escapeAttr(item.link)}" target="_blank">Clique: <b style="color:blue">Link da loja</b></a>
           </div>
 
           <button class="btn btn-sm btn-danger mt-3 btn-cancelar"
@@ -623,4 +643,3 @@ function escapeAttr(s) {
 
 </body>
 </html>
-
