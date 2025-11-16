@@ -406,7 +406,7 @@ function renderCatalogo(list) {
       <img src="${p.foto || "https://via.placeholder.com/400x240?text=Sem+Imagem"}" class="foto-presente w-100">
       <div class="p-3">
         <h5>${escapeHtml(p.nome)}</h5>
-        <div class="small-muted"><a href="${escapeAttr(p.link)}" target="_blank">Clique: <b style="color:blue">Link da loja</b</a></div>
+        <div class="small-muted"><a href="${escapeAttr(p.link)}" target="_blank">Clique: <b style="color:blue">Link da loja</b></a></div>
         <div class="mt-3 d-flex">
           <button class="btn btn-sm btn-success ms-auto btn-choose" data-idx="${idx}">Reservar</button>
         </div>
@@ -623,3 +623,4 @@ function escapeAttr(s) {
 
 </body>
 </html>
+
