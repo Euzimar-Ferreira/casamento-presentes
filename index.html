@@ -131,7 +131,15 @@
 
     .card-presente:hover{transform: translateY(-8px);box-shadow:0 22px 48px rgba(20,30,60,0.12)}
 
-    .foto-presente{height:180px;object-fit:cover;width:100%;display:block}
+    .foto-presente {
+  height:180px;
+  width:100%;
+  display:block;
+  object-fit:contain;
+  background-color:#ffffff; /* fundo branco elegante */
+  padding:6px; /* pequeno respiro para imagens com proporção diferente */
+}
+
 
     .card-body{padding:14px 16px;display:flex;flex-direction:column;gap:10px;flex:1}
 
@@ -250,7 +258,7 @@
           <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <img id="mdFoto" src="" alt="foto" class="img-fluid mb-3 rounded" style="max-height:260px;width:100%;object-fit:cover">
+          <img id="mdFoto" src="" alt="foto" class="img-fluid mb-3 rounded" style="max-height:260px;width:100%;object-fit:contain;background:#fff;padding:6px;">
 
           <h5 id="mdNome" style="margin-bottom:6px"></h5>
           <div id="mdLink" class="muted"></div>
@@ -481,4 +489,3 @@ function showWelcome() {
   </script>
 </body>
 </html>
-
