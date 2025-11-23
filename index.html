@@ -5,332 +5,255 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Confirmação de Presentes — Casamento</title>
 
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
   <!-- Bootstrap 5 (CDN) -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-..." crossorigin="anonymous">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
   <!-- SweetAlert2 (CDN) -->
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-  <!-- Axios (CDN) -->
-  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   <!-- Feather icons (CDN) -->
   <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
   <!-- Inputmask (CDN) for telefone -->
   <script src="https://cdn.jsdelivr.net/npm/inputmask@5/dist/inputmask.min.js"></script>
 
   <style>
-    /* ======================================================
-   🎩 TEMA LUXO – PRETO | CINZA | BRANCO
-   Estilo premium para site de casamento
-====================================================== */
+    /* ===============================
+       PALETA: Royal Blue | Dourado | Branco | Preto | Cinza Médio
+       ================================ */
 
-:root {
-  --black: #000;
-  --dark: #111;
-  --gray-1: #1a11;
-  --gray-2: #2a2a2a;
-  --gray-3: #ccc;
-  --gray-4: #eee;
-  --white: #fff;
+    :root{
+      --royal: #2749E6; /* azul royal */
+      --gold: #D4AF37; /* dourado elegante */
+      --white: #ffffff;
+      --black: #0b0b0b;
+      --gray: #8f8f8f; /* cinza médio */
 
-  --border-soft: rgba(255,255,255,0.08);
-  --shadow-soft: 0 8px 28px rgba(0,0,0,0.35);
-  --shadow-soft-light: 0 6px 20px rgba(0,0,0,0.18);
+      --radius: 14px;
+      --card-radius: 12px;
+      --glass: rgba(255,255,255,0.04);
 
-  --radius: 1rem;
+      --title-font: 'Playfair Display', serif;
+      --ui-font: 'Poppins', sans-serif;
+    }
 
-  --font-title: "Playfair Display", serif;
-  --font-text: "Helvetica Neue", Arial, sans-serif;
-}
+    /* Reset básico */
+    *{box-sizing: border-box}
+    body{
+      margin:0;
+      font-family: var(--ui-font);
+      background: linear-gradient(180deg, rgba(39,73,230,0.09) 0%, rgba(0,0,0,0.6) 100%),
+                  url('') center/cover no-repeat;
+      color: var(--black);
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+    }
 
-/* BACKGROUND GERAL */
-body {
-  background: radial-gradient(circle at top, #1a1a1a, #000);
-  color: var(--white);
-  font-family: var(--font-text);
-  margin: 0;
-}
+    /* CONTAINER central com padding elegante */
+    .wrap{
+      max-width:1100px;
+      margin:28px auto;
+      padding:28px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(255,255,255,0.96));
+      border-radius: 18px;
+      box-shadow: 0 18px 50px rgba(10,20,40,0.12);
+      border: 1px solid rgba(39,73,230,0.06);
+    }
 
-/* HEADER */
-.hero {
-  background: linear-gradient(135deg, #000, #1a1a1a);
-  padding: 30px 0;
-  border-bottom: 1px solid rgba(255,255,255,0.05);
-  box-shadow: 0 5px 25px rgba(0,0,0,0.4);
-}
+    /* HEADER estilizado baseada no casamento */
+    header.site-hero{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:20px;
+      margin-bottom:22px;
+    }
 
-.hero h1 {
-  font-family: var(--font-title);
-  font-size: 1.8rem;
-  letter-spacing: 0.5px;
-}
+    .branding{
+      display:flex;align-items:center;gap:16px;
+    }
 
-.hero small {
-  font-weight: 300;
-  opacity: .85;
-}
+    .logo-badge{
+      width:74px;height:74px;border-radius:16px;
+      background: linear-gradient(135deg,var(--royal), #2b3df0);
+      display:flex;align-items:center;justify-content:center;
+      color:var(--white);font-weight:700;font-family:var(--title-font);
+      box-shadow: 0 8px 24px rgba(39,73,230,0.14);
+      position:relative;
+    }
 
-.hero button {
-  border-radius: 8px !important;
-}
+    .logo-badge::after{
+      content:'';position:absolute;right:-6px;bottom:-6px;width:18px;height:18px;border-radius:50%;background:var(--gold);box-shadow:0 2px 6px rgba(0,0,0,0.12)
+    }
 
-/* TITULOS */
-h2, h3, h5 {
-  font-family: var(--font-title);
-}
+    .brand-title h1{font-family:var(--title-font);margin:0;font-size:1.35rem;color:var(--black);}
+    .brand-title small{display:block;color:var(--gray);font-weight:600}
 
-.small-muted {
-  font-size: .9rem;
-  color: #bdbdbd !important;
-}
+    .cta-row{display:flex;gap:10px;align-items:center}
+    .cta-row .btn{
+      border-radius: 10px;padding:10px 14px;font-weight:600;
+    }
 
-/* GRID PRESENTES */
-.grid-presente {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, 250px);
-  justify-content: center; /* centraliza o grid */
-  gap: 22px;
-}
+    .btn-ghost-gold{
+      background:transparent;border:2px solid var(--gold);color:var(--black)
+    }
 
-/* CARD DE PRESENTE */
-.card-presente {
-  background: var(--white);
-  color: var(--dark);
-  border-radius: var(--radius);
-  box-shadow: var(--shadow-soft-light);
-  border: none;
-  overflow: hidden;
-  transition: .3s ease;
-}
+    .btn-royal{
+      background:var(--royal);color:var(--white);border:none
+    }
 
-.card-presente:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 12px 35px rgba(0,0,0,0.28);
-}
+    .btn-royal:hover{background: #1636d6}
 
-.foto-presente {
-  height: 200px;
-  width: 100%;
-  object-fit: cover;
-}
+    /* Seção título catálogo */
+    .catalog-header{display:flex;align-items:center;justify-content:space-between;margin:18px 0}
+    .catalog-header h2{font-family:var(--title-font);margin:0;color:var(--black)}
+    .catalog-sub{color:var(--gray);font-size:0.95rem}
 
-/* BOTÃO RESERVAR */
-.card-presente .btn-success {
-  background: var(--black) !important;
-  border: none;
-  letter-spacing: .5px;
-  padding: 6px 12px;
-}
+    /* GRID RESPONSIVO */
+    .grid-presente{
+      display:grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap:20px;
+      align-items:start;
+    }
 
-.card-presente .btn-success:hover {
-  background: #333 !important;
-}
+    /* CARD */
+    .card-presente{
+      border-radius:var(--card-radius);
+      overflow:hidden;
+      background: linear-gradient(180deg, #fff, #fbfbfb);
+      border: 1px solid rgba(0,0,0,0.06);
+      box-shadow: 0 8px 30px rgba(20,30,60,0.06);
+      transition: transform .25s ease, box-shadow .25s ease;
+      display:flex;flex-direction:column;
+      height:100%;
+    }
 
-/* INPUTS */
-input.form-control {
-  border-radius: 0.7rem;
-}
+    .card-presente:hover{transform: translateY(-8px);box-shadow:0 22px 48px rgba(20,30,60,0.12)}
 
-/* BOTÕES GERAIS */
-.btn-primary {
-  background: var(--black) !important;
-  border: none !important;
-}
+    .foto-presente{height:180px;object-fit:cover;width:100%;display:block}
 
-.btn-primary:hover {
-  background: #333 !important;
-}
+    .card-body{padding:14px 16px;display:flex;flex-direction:column;gap:10px;flex:1}
 
-.btn-outline-light:hover {
-  background: #fff !important;
-  color: #111 !important;
-}
+    .card-body h5{margin:0;font-family:var(--title-font);font-size:1.05rem;color:var(--black)}
+    .card-body .muted{color:var(--gray);font-size:0.92rem}
 
-/* BOTÃO CANCELAR */
-.btn-danger {
-  background: #b70000 !important;
-  border: none !important;
-}
+    .card-actions{display:flex;gap:8px;align-items:center;margin-top:auto}
 
-.btn-danger:hover {
-  background: #8a0000 !important;
-}
+    .btn-reservar{
+      background: linear-gradient(90deg,var(--royal), #2b3df0);
+      color:var(--white);border:none;padding:8px 12px;border-radius:10px;font-weight:600
+    }
 
-/* MODAL */
-.modal-content {
-  background: var(--white);
-  color: var(--dark);
-  border-radius: var(--radius);
-  border: none;
-  overflow: hidden;
-  box-shadow: var(--shadow-soft);
-}
+    .btn-reservar:hover{filter:brightness(.95)}
 
-.modal-header {
-  background: var(--black);
-  color: var(--white);
-  border-bottom: none;
-}
+    .btn-link-gold{background:transparent;border:1px dashed rgba(212,175,55,0.16);padding:6px 10px;border-radius:8px;color:var(--gold);font-weight:600}
 
-#btnConfirmarPresente {
-  background: var(--black) !important;
-  color: var(--white) !important;
-  border: none;
-  padding: 12px;
-  border-radius: .8rem;
-  font-size: 1rem;
-}
+    /* Formas e inputs */
+    input.form-control{border-radius:10px;border:1px solid rgba(10,10,10,0.06);padding:10px}
+    .form-label{font-weight:600;color:var(--black)}
 
-#btnConfirmarPresente:hover {
-  background: #222 !important;
-}
+    /* Modal custom */
+    .modal-content{border-radius:14px;border:none;overflow:hidden}
+    .modal-header{border-bottom:none;background:linear-gradient(90deg,var(--royal), #2b3df0);color:var(--white)}
+    .modal-footer{border-top:none}
 
-/* FOOTER */
-footer {
-  padding: 40px 0;
-  border-top: 1px solid rgba(255,255,255,0.05);
-  opacity: .75;
-  font-family: var(--font-text);
-}
+    #btnConfirmarPresente{background:var(--gold);color:var(--black);font-weight:700;border-radius:10px;padding:10px 14px;border:none}
+    #btnConfirmarPresente:hover{filter:brightness(.95)}
 
-/* SUAVIZA LINKS */
-a {
-  color: #333;
-  text-decoration: none;
-  font-weight: 500;
-}
+    .btn-ghost{background:transparent;border:1px solid rgba(10,10,10,0.06);padding:10px 12px;border-radius:10px}
 
-a:hover {
-  opacity: 0.7;
-}
+    /* Minhas escolhas area */
+    #minhasEscolhas{margin-top:24px}
 
-/* ===========================
-   SweetAlert2 – Tema Luxo
-=========================== */
+    /* Footer */
+    footer{margin-top:28px;text-align:center;color:var(--gray);font-size:0.92rem}
 
-.swal2-popup {
-  background: #111 !important;
-  color: #fff !important;
-  border-radius: 1rem !important;
-  padding: 20px !important;
-  box-shadow: 0 8px 40px rgba(0,0,0,0.6) !important;
-}
+    /* Pequenos detalhes estéticos */
+    .ribbon{position:absolute;left:12px;top:12px;background:var(--gold);color:var(--black);padding:6px 10px;border-radius:8px;font-weight:700;font-size:0.85rem}
 
-.swal2-title {
-  font-family: "Playfair Display", serif !important;
-  color: #fff !important;
-  font-size: 1.6rem !important;
-}
-
-.swal2-html-container {
-  color: #ddd !important;
-  font-size: 1rem !important;
-}
-
-.swal2-confirm {
-  background: #000 !important;
-  border-radius: 0.7rem !important;
-  border: none !important;
-  padding: 10px 22px !important;
-}
-
-.swal2-confirm:hover {
-  background: #222 !important;
-}
-
-.swal2-cancel {
-  background: #333 !important;
-  color: #fff !important;
-  border-radius: 0.7rem !important;
-  border: none !important;
-}
-
-.swal2-cancel:hover {
-  background: #444 !important;
-}
-
-.btn-ghost {
-  border: 2px solid var(--black);
-  background: transparent !important;
-  color: var(--black) !important;
-  border-radius: .8rem;
-  padding: 10px 22px;
-  transition: .25s ease;
-}
-
-.btn-ghost:hover {
-  background: rgba(0,0,0,0.07) !important;
-  color: var(--black) !important;
-}
+    @media (max-width:560px){
+      .branding .brand-title h1{font-size:1rem}
+      .logo-badge{width:56px;height:56px}
+    }
 
   </style>
 </head>
 <body>
 
-  <header class="hero py-4">
-    <div class="container d-flex align-items-center justify-content-between">
-      <div>
-        <h1 class="h3 mb-0">Confirme seu presente — <small>EUZIMAR & DANIELA</small></h1>
-        <div class="small">Escolha com carinho — tudo em tempo real.</div>
+  <div class="wrap">
+    <header class="site-hero">
+      <div class="branding">
+        <div class="logo-badge">E&amp;D</div>
+        <div class="brand-title">
+          <h1>Confirme seu presente</h1>
+          <small>EUZIMAR &amp; DANIELA — Gerenciador de Presentes</small>
+        </div>
       </div>
-      <div>
-        <button id="btnConsultar" class="btn btn-light btn-sm me-2">Minhas Escolhas</button>
-        <button id="btnRefresh" class="btn btn-outline-light btn-sm">Atualizar</button>
+
+      <div class="cta-row">
+        <button id="btnConsultar" class="btn btn-ghost-gold">Minhas Escolhas</button>
+        <button id="btnRefresh" class="btn btn-royal">Atualizar</button>
       </div>
-    </div>
-  </header>
+    </header>
 
-  <main class="container my-4">
+    <main>
+      <section class="catalog-header">
+        <div>
+          <h2>Catálogo de Presentes</h2>
+          <div class="catalog-sub">Toque em um presente para ver detalhes e confirmar. As reservas são em tempo real.</div>
+        </div>
+        <div class="d-none d-md-block small-muted">Dica: Use o botão "Minhas Escolhas" para gerenciar suas reservas.</div>
+      </section>
 
-    <section class="mb-3">
-      <div class="d-flex align-items-center justify-content-between">
-        <h2 class="h5">Catálogo de Presentes</h2>
-        <div class="small-muted">Toque em um presente para ver detalhes e confirmar.</div>
-      </div>
-    </section>
+      <section id="catalogo" class="grid-presente" aria-live="polite">
+        <!-- cards gerados pela JS -->
+      </section>
 
-    <section id="catalogo" class="grid-presente" aria-live="polite">
-      <!-- cards gerados pela JS -->
-    </section>
+      <section id="minhasEscolhas" style="display:none">
+        <h3 style="margin-top:22px;margin-bottom:12px;font-family:var(--title-font)">Minhas escolhas</h3>
+        <div id="listaEscolhas" class="grid-presente"></div>
+      </section>
 
-<section id="minhasEscolhas" class="mt-5" style="display:none">
-  <h2 class="h5 mb-3">Minhas escolhas</h2>
-  <div id="listaEscolhas" class="grid-presente"></div>
-</section>
+      <hr style="margin:26px 0;border:none;border-top:1px solid rgba(0,0,0,0.06)">
 
-    <hr class="my-4">
+      <section class="row align-items-center">
+        <div class="col-md-7">
+          <h4 style="margin:0 0 8px 0;font-family:var(--title-font)">Confirmar por telefone</h4>
+          <div class="small-muted" style="color:var(--gray)">Digite o telefone usado para confirmar/reservar.</div>
+        </div>
+        <div class="col-md-5">
+          <form id="formConsulta" class="row g-2">
+            <div class="col-8">
+              <input id="telefoneConsulta" class="form-control" placeholder="(DDD) 9xxxx-xxxx" />
+            </div>
+            <div class="col-4">
+              <button class="btn btn-royal w-100" type="submit">Consultar</button>
+            </div>
+          </form>
+        </div>
+      </section>
 
-    <section class="row">
-      <div class="col-md-6">
-        <h3 class="h6">Confirmar por telefone</h3>
-        <form id="formConsulta" class="row g-2">
-          <div class="col-8">
-            <input id="telefoneConsulta" class="form-control" placeholder="(DDD) 9xxxx-xxxx" />
-          </div>
-          <div class="col-4">
-            <button class="btn btn-primary w-100" type="submit">Consultar</button>
-          </div>
-        </form>
-      </div>
-    </section>
-
-    <footer class="text-center mt-5 small-muted">
-      <div>Feito com ❤️ — de Euzimar & Daniela.</div>
-      <div class="mt-2">Versão: 1.0</div>
-    </footer>
-
-  </main>
+      <footer>
+        <div>Feito com ❤️ — de Euzimar &amp; Daniela.</div>
+        <div class="mt-2">Versão: 1.0</div>
+      </footer>
+    </main>
+  </div>
 
   <!-- Modal template (Bootstrap 5) -->
   <div class="modal fade" id="modalDetalhe" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
-        <div class="modal-header" style="background:var(--accent-1); color:white">
+        <div class="modal-header">
           <h5 class="modal-title">Detalhe do Presente</h5>
           <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <img id="mdFoto" src="" alt="foto" class="img-fluid mb-3 rounded">
-          <h5 id="mdNome"></h5>
-          <p id="mdLink"></p>
+          <img id="mdFoto" src="" alt="foto" class="img-fluid mb-3 rounded" style="max-height:260px;width:100%;object-fit:cover">
+
+          <h5 id="mdNome" style="margin-bottom:6px"></h5>
+          <div id="mdLink" class="muted"></div>
 
           <hr>
 
@@ -344,8 +267,8 @@ a:hover {
           </div>
 
           <div class="d-flex gap-2">
-            <button id="btnConfirmarPresente" class="btn" style="background:var(--accent-2); color:#111">Confirmar presente</button>
-		<button id="btnVoltarModal" class="btn btn-ghost">Voltar</button>
+            <button id="btnConfirmarPresente" class="me-2">Confirmar presente</button>
+            <button id="btnVoltarModal" class="btn btn-ghost">Voltar</button>
           </div>
         </div>
       </div>
@@ -353,293 +276,208 @@ a:hover {
   </div>
 
   <!-- Bootstrap JS (CDN) -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-..." crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
+  <!-- Script funcional (mantive sua lógica, apenas adaptada ao novo DOM/estilos) -->
   <script>
-const API_URL = "https://script.google.com/macros/s/AKfycbyb3c2xbNpAjKs1Pf8QxNA9vFQjDH8nJ17752pbB8F5D-y_JSHYnLNyug5Flhlg2ggwVQ/exec";
+  const API_URL = "https://script.google.com/macros/s/AKfycbyb3c2xbNpAjKs1Pf8QxNA9vFQjDH8nJ17752pbB8F5D-y_JSHYnLNyug5Flhlg2ggwVQ/exec";
 
-let presentesCache = [];
-const modal = new bootstrap.Modal(document.getElementById("modalDetalhe"));
-let presenteSelecionado = null;
+  let presentesCache = [];
+  const modal = new bootstrap.Modal(document.getElementById("modalDetalhe"));
+  let presenteSelecionado = null;
 
-Inputmask({ mask: "(99) 99999-9999" }).mask(document.getElementById("telefoneConsulta"));
+  // máscaras
+  Inputmask({ mask: "(99) 99999-9999" }).mask(document.getElementById("telefoneConsulta"));
 
-document.addEventListener("DOMContentLoaded", () => {
-  carregarCatalogo();
-  feather.replace();
-});
-
-document.getElementById("btnRefresh").addEventListener("click", carregarCatalogo);
-document.getElementById("btnConsultar").addEventListener("click", () => {
-  document.getElementById("telefoneConsulta").focus();
-});
-
-document.getElementById("formConsulta").addEventListener("submit", async (e) => {
-  e.preventDefault();
-  const t = document.getElementById("telefoneConsulta").value.replace(/\D/g, "");
-  if (!t) return Swal.fire("Informe o telefone");
-  await consultarPorTelefone(t);
-});
-
-document.getElementById("btnVoltarModal").addEventListener("click", () => {
-  modal.hide();
-});
-
-/* ============================
-    GET PRESENTES (JSON)
-============================ */
-async function carregarCatalogo() {
-  showLoading("Carregando catálogo...");
-
-  try {
-    const resp = await fetch(`${API_URL}?action=getPresentes`, {
-      method: "GET"
-    });
-
-    const dados = JSON.parse(await resp.text()); // 👈 Ajuste: Apps Script entrega como texto
-    presentesCache = dados;
-
-    renderCatalogo(presentesCache);
-    closeLoading();
-
-  } catch (err) {
-    closeLoading();
-    Swal.fire("Erro", "Não foi possível carregar o catálogo.", "error");
-  }
-}
-
-function renderCatalogo(list) {
-  const container = document.getElementById("catalogo");
-  container.innerHTML = "";
-
-  if (!list.length) {
-    container.innerHTML = `<div class="p-4 text-center small-muted">Nenhum presente disponível no momento.</div>`;
-    return;
-  }
-
-  list.forEach((p, idx) => {
-    const card = document.createElement("div");
-    card.className = "card-presente position-relative card ";
-    card.style.padding = "0";
-
-    card.innerHTML = `
-      <img src="${p.foto || "https://via.placeholder.com/400x240?text=Sem+Imagem"}" class="foto-presente w-100">
-      <div class="p-3">
-        <h5>${escapeHtml(p.nome)}</h5>
-        <div class="small-muted"><a href="${escapeAttr(p.link)}" target="_blank">Clique: <b style="color:blue">Link da loja</b></a></div>
-        <div class="mt-3 d-flex">
-          <button class="btn btn-sm btn-success ms-auto btn-choose" data-idx="${idx}">Reservar</button>
-        </div>
-      </div>
-    `;
-
-    container.appendChild(card);
+  document.addEventListener("DOMContentLoaded", () => {
+    carregarCatalogo();
+    feather.replace();
   });
 
-  document.querySelectorAll(".btn-open").forEach((b) => b.addEventListener("click", abrirDetalhe));
-  document.querySelectorAll(".btn-choose").forEach((b) => b.addEventListener("click", abrirDetalhe));
+  document.getElementById("btnRefresh").addEventListener("click", carregarCatalogo);
+  document.getElementById("btnConsultar").addEventListener("click", () => {
+    document.getElementById("telefoneConsulta").focus();
+  });
+
+  document.getElementById("formConsulta").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const t = document.getElementById("telefoneConsulta").value.replace(/\D/g, "");
+    if (!t) return Swal.fire("Informe o telefone");
+    await consultarPorTelefone(t);
+  });
+
+  document.getElementById("btnVoltarModal").addEventListener("click", () => {
+    modal.hide();
+  });
+
+  async function carregarCatalogo() {
+    showLoading("Carregando catálogo...");
+    try {
+      const resp = await fetch(`${API_URL}?action=getPresentes`, { method: "GET" });
+      const dados = JSON.parse(await resp.text());
+      presentesCache = dados;
+      renderCatalogo(presentesCache);
+      closeLoading();
+setTimeout(() => {
+      showWelcome();
+    }, 300);
+    } catch (err) {
+      closeLoading();
+      Swal.fire("Erro", "Não foi possível carregar o catálogo.", "error");
+    }
+  }
+// MODAL DE BOAS-VINDAS AO CARREGAR O SITE
+function showWelcome() {
+  Swal.fire({
+    title: "Seja muito bem-vindo(a) 💛",
+    html: `
+      <p style="font-size: 1rem; margin-top: 10px; line-height: 1.55;">
+        Que alegria ter você aqui!  
+        Este espaço foi preparado com muito carinho,
+        como quem abre a porta de casa para receber pessoas queridas.
+      </p>
+
+      <p style="font-size: 1rem; line-height: 1.55;">
+        Aqui você encontrará algumas sugestões de presentes —
+        mas fique à vontade para escolher o que desejar, 
+        mesmo que não esteja na lista.  
+        O que realmente importa para nós é o gesto,
+        o carinho e a sua presença na nossa história.
+      </p>
+
+      <p style="font-size: 1rem; line-height: 1.55;">
+        Navegue com tranquilidade, sinta-se acolhido(a),
+        e aproveite este cantinho feito de coração.  
+      </p>
+    `,
+    confirmButtonText: "Entrar no site",
+    confirmButtonColor: "#D4AF37",
+    width: 600,
+    padding: "2rem 1.5rem",
+    background: "#ffffff",
+    color: "#333",
+    icon: "info",
+  });
 }
 
-function abrirDetalhe(e) {
-  const idx = e.currentTarget.dataset.idx;
-  presenteSelecionado = presentesCache[idx];
+  function renderCatalogo(list) {
+    const container = document.getElementById("catalogo");
+    container.innerHTML = "";
 
-  document.getElementById("mdFoto").src = presenteSelecionado.foto || "";
-  document.getElementById("mdNome").innerText = presenteSelecionado.nome;
-  document.getElementById("mdLink").innerHTML = `<a href="${escapeAttr(presenteSelecionado.link)}" target="_blank">Clique: <b style="color:blue">Link da loja</b></a>`;
-
-  document.getElementById("mdConvidado").value = "";
-  document.getElementById("mdTelefone").value = "";
-
-  Inputmask({ mask: "(99) 99999-9999" }).mask(document.getElementById("mdTelefone"));
-
-  modal.show();
-}
-
-/* ============================
-    CONFIRMAR PRESENTE (POST)
-============================ */
-document.getElementById("btnConfirmarPresente").addEventListener("click", async () => {
-  const nome = document.getElementById("mdConvidado").value.trim();
-  const telefone = document.getElementById("mdTelefone").value.replace(/\D/g, "");
-
-  if (!nome || !telefone) return Swal.fire("Preencha nome e telefone");
-
-  try {
-    showLoading("Confirmando...");
-
-    const resp = await fetch(`${API_URL}?action=registrarEscolha`, {
-      method: "POST",
-      body: JSON.stringify({
-        nomePresente: presenteSelecionado.nome,
-        convidado: nome,
-        telefone: telefone
-      })
-    });
-
-    const dados = JSON.parse(await resp.text());
-    closeLoading();
-
-    Swal.fire("OK", dados?.mensagem || "Confirmado!", "success");
-    modal.hide();
-    carregarCatalogo();
-
-  } catch (err) {
-    closeLoading();
-    Swal.fire("Erro", "Não foi possível confirmar.", "error");
-  }
-});
-
-/* ============================
-    CANCELAR PRESENTE (POST)
-============================ */
-document.getElementById("btnCancelarPresente").addEventListener("click", async () => {
-  const telefone = document.getElementById("mdTelefone").value.replace(/\D/g, "");
-  if (!telefone) return Swal.fire("Informe o telefone");
-
-  const ask = await Swal.fire({ title: "Deseja cancelar?", showCancelButton: true });
-  if (!ask.isConfirmed) return;
-
-  try {
-    showLoading("Cancelando...");
-
-    const resp = await fetch(`${API_URL}?action=cancelarEscolha`, {
-      method: "POST",
-      body: JSON.stringify({
-        nomePresente: presenteSelecionado.nome,
-        telefone
-      })
-    });
-
-    const dados = JSON.parse(await resp.text());
-    closeLoading();
-
-    Swal.fire("OK", dados?.mensagem || "Cancelado", "success");
-    modal.hide();
-    carregarCatalogo();
-
-  } catch (err) {
-    closeLoading();
-    Swal.fire("Erro ao cancelar.", "", "error");
-  }
-});
-
-/* ============================
-  CONSULTAR POR TELEFONE (GET)
-============================ */
-async function consultarPorTelefone(telefone) {
-  showLoading("Consultando...");
-
-  try {
-    const resp = await fetch(`${API_URL}?action=getEscolhasPorTelefone&telefone=${telefone}`);
-    const dados = JSON.parse(await resp.text());
-    closeLoading();
-
-    const box = document.getElementById("minhasEscolhas");
-    const lista = document.getElementById("listaEscolhas");
-
-    if (!dados.length) {
-      box.style.display = "none";
-      return Swal.fire("Nenhuma escolha encontrada.");
+    if (!list || !list.length) {
+      container.innerHTML = `<div class="p-4 text-center" style="color:var(--gray)">Nenhum presente disponível no momento.</div>`;
+      return;
     }
 
-    // Exibir box
-    box.style.display = "block";
-    lista.innerHTML = "";
-
-    dados.forEach((item) => {
+    list.forEach((p, idx) => {
       const card = document.createElement("div");
-      card.className = "card-presente card position-relative";
+      card.className = "card-presente position-relative";
       card.style.padding = "0";
 
+      const hasBadge = p.reservado ? '<div class="ribbon">Reservado</div>' : '';
+
       card.innerHTML = `
-        <img src="${item.foto || 'https://via.placeholder.com/400x240?text=Sem+Imagem'}"
-             class="foto-presente w-100">
-
-        <div class="p-3">
-          <h5>${escapeHtml(item.nomePresente)}</h5>
-
-          <div class="small-muted">
-            Link:
-            <a href="${escapeAttr(item.link)}" target="_blank">Clique: <b style="color:blue">Link da loja</b></a>
+        ${hasBadge}
+        <img src="${p.foto || 'https://via.placeholder.com/600x360?text=Sem+Imagem'}" class="foto-presente w-100" alt="${escapeAttr(p.nome)}">
+        <div class="card-body">
+          <h5>${escapeHtml(p.nome)}</h5>
+          <div class="muted">${p.descricao ? escapeHtml(p.descricao) : ''}</div>
+          <div class="card-actions">
+            <button class="btn btn-sm btn-link-gold" onclick="window.open('${escapeAttr(p.link)}','_blank')">Ver loja</button>
+            <button class="btn btn-sm btn-reservar ms-auto btn-choose" data-idx="${idx}">Reservar</button>
           </div>
-
-          <button class="btn btn-sm btn-danger mt-3 btn-cancelar"
-                  data-nome="${escapeAttr(item.nomePresente)}"
-                  data-telefone="${escapeAttr(telefone)}">
-            Cancelar escolha
-          </button>
         </div>
       `;
 
-      lista.appendChild(card);
+      container.appendChild(card);
     });
 
-    // Eventos dos botões de cancelar
-    document.querySelectorAll(".btn-cancelar").forEach((btn) => {
-      btn.addEventListener("click", async () => {
-        const nomePresente = btn.dataset.nome;
-        const tel = btn.dataset.telefone;
-
-        const ask = await Swal.fire({
-          title: "Deseja cancelar este presente?",
-          showCancelButton: true
-        });
-
-        if (!ask.isConfirmed) return;
-
-        try {
-          showLoading("Cancelando...");
-          const resp = await fetch(`${API_URL}?action=cancelarEscolha`, {
-            method: "POST",
-            body: JSON.stringify({
-              nomePresente: nomePresente,
-              telefone: tel
-            })
-          });
-
-          const dados = JSON.parse(await resp.text());
-          closeLoading();
-
-          Swal.fire("OK", dados?.mensagem || "Cancelado", "success");
-          carregarCatalogo();
-          consultarPorTelefone(tel); // Recarregar lista
-
-        } catch (err) {
-          closeLoading();
-          Swal.fire("Erro ao cancelar.", "", "error");
-        }
-      });
-    });
-
-  } catch (err) {
-    closeLoading();
-    Swal.fire("Erro ao consultar.");
+    document.querySelectorAll('.btn-choose').forEach(b => b.addEventListener('click', abrirDetalhe));
   }
-}
+
+  function abrirDetalhe(e) {
+    const idx = e.currentTarget.dataset.idx;
+    presenteSelecionado = presentesCache[idx];
+
+    document.getElementById('mdFoto').src = presenteSelecionado.foto || '';
+    document.getElementById('mdNome').innerText = presenteSelecionado.nome;
+    document.getElementById('mdLink').innerHTML = `<a href="${escapeAttr(presenteSelecionado.link)}" target="_blank">Abrir link da loja</a>`;
+
+    document.getElementById('mdConvidado').value = '';
+    document.getElementById('mdTelefone').value = '';
+    Inputmask({ mask: "(99) 99999-9999" }).mask(document.getElementById("mdTelefone"));
+
+    modal.show();
+  }
+
+  document.getElementById('btnConfirmarPresente').addEventListener('click', async () => {
+    const nome = document.getElementById('mdConvidado').value.trim();
+    const telefone = document.getElementById('mdTelefone').value.replace(/\D/g, "");
+    if (!nome || !telefone) return Swal.fire('Preencha nome e telefone');
+
+    try{
+      showLoading('Confirmando...');
+      const resp = await fetch(`${API_URL}?action=registrarEscolha`, {
+        method:'POST', body: JSON.stringify({ nomePresente: presenteSelecionado.nome, convidado: nome, telefone })
+      });
+      const dados = JSON.parse(await resp.text());
+      closeLoading();
+      Swal.fire('OK', dados?.mensagem||'Confirmado!', 'success');
+      modal.hide(); carregarCatalogo();
+    } catch(err){ closeLoading(); Swal.fire('Erro', 'Não foi possível confirmar.', 'error'); }
+  });
+
+  async function consultarPorTelefone(telefone){
+    showLoading('Consultando...');
+    try{
+      const resp = await fetch(`${API_URL}?action=getEscolhasPorTelefone&telefone=${telefone}`);
+      const dados = JSON.parse(await resp.text());
+      closeLoading();
+
+      const box = document.getElementById('minhasEscolhas');
+      const lista = document.getElementById('listaEscolhas');
+
+      if(!dados.length){ box.style.display='none'; return Swal.fire('Nenhuma escolha encontrada.'); }
+
+      box.style.display='block'; lista.innerHTML='';
+
+      dados.forEach(item => {
+        const card = document.createElement('div');
+        card.className = 'card-presente position-relative';
+        card.style.padding = '0';
+        card.innerHTML = `
+          <img src="${item.foto||'https://via.placeholder.com/600x360?text=Sem+Imagem'}" class="foto-presente w-100">
+          <div class="card-body">
+            <h5>${escapeHtml(item.nomePresente)}</h5>
+            <div class="muted">Link: <a href="${escapeAttr(item.link)}" target="_blank">Abrir loja</a></div>
+            <button class="btn btn-sm btn-ghost mt-3 btn-cancelar" data-nome="${escapeAttr(item.nomePresente)}" data-telefone="${escapeAttr(telefone)}">Cancelar escolha</button>
+          </div>
+        `;
+        lista.appendChild(card);
+      });
+
+      document.querySelectorAll('.btn-cancelar').forEach(btn => btn.addEventListener('click', async () => {
+        const nomePresente = btn.dataset.nome; const tel = btn.dataset.telefone;
+        const ask = await Swal.fire({ title: 'Deseja cancelar este presente?', showCancelButton:true });
+        if(!ask.isConfirmed) return;
+        try{
+          showLoading('Cancelando...');
+          const resp = await fetch(`${API_URL}?action=cancelarEscolha`, { method:'POST', body: JSON.stringify({ nomePresente, telefone: tel })});
+          const dados = JSON.parse(await resp.text()); closeLoading(); Swal.fire('OK', dados?.mensagem||'Cancelado','success'); carregarCatalogo(); consultarPorTelefone(tel);
+        } catch(err){ closeLoading(); Swal.fire('Erro ao cancelar.','','error'); }
+      }));
+
+    } catch(err){ closeLoading(); Swal.fire('Erro ao consultar.'); }
+  }
+
+  function showLoading(text = 'Carregando...'){ Swal.fire({ title:text, allowOutsideClick:false, didOpen:()=>Swal.showLoading() }); }
+  function closeLoading(){ Swal.close(); }
+
+  function escapeHtml(s){ return s?.replace(/[&<>\"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])) }
+  function escapeAttr(s){ return (s||'').replace(/"/g,'&quot;') }
 
 
-/* ============================
-      Helpers
-============================ */
-function showLoading(text = "Carregando...") {
-  Swal.fire({ title: text, allowOutsideClick: false, didOpen: () => Swal.showLoading() });
-}
 
-function closeLoading() {
-  Swal.close();
-}
-
-function escapeHtml(s) {
-  return s?.replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
-}
-
-function escapeAttr(s) {
-  return s?.replace(/"/g, "&quot;");
-}
-</script>
-
-
-
+  </script>
 </body>
 </html>
